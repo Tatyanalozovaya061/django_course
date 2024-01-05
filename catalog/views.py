@@ -5,30 +5,16 @@ from catalog.models import Category, Product
 def index(request):
     context = {
         'object_list': Product.objects.all(),
-        'title': 'Магазин продуктов'
+        'title': 'Магазин продуктов - главная'
     }
     return render(request, 'catalog/index.html', context)
 
-def product(request, pk):
+
+def product_list(request, pk):
     context = {
-        'object_list': Product.objects.filter(id=pk)
+        'object': Product.objects.get(id=pk),
     }
-    return render(request, 'catalog/product.html', context)
-
-def product_list(request):
-    if request.method == 'POST':
-        # Обработка нажатия кнопки
-        # Вы можете выполнить здесь необходимые действия или перенаправить пользователя на другую страницу
-        return redirect('новая_страница')
-    else:
-        return render(request, 'product_list.html')
-
-# def categories(request):
-#     context = {
-#         'object_list': Category.objects.all(),
-#         'title': 'Магазин продуктов'
-#     }
-#     return render(request, 'catalog/index.html', context)
+    return render(request, 'catalog/product_list.html', context)
 
 
 def contacts(request):
