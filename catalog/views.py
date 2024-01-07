@@ -10,12 +10,26 @@ def index(request):
     return render(request, 'catalog/index.html', context)
 
 
-def product_list(request, pk):
+def product(request, pk):
     context = {
-        'object': Product.objects.get(id=pk),
+        'object': Product.objects.get(pk=pk),
     }
     return render(request, 'catalog/product_list.html', context)
 
+
+# def product(request, pk):
+#     context = {
+#         'object': Product.objects.get(pk=pk),
+#     }
+#     return render(request, 'products/product_detail.html', context)
+
+# def product(request):
+#     context = {
+#         'object_list': Product.objects.all(),
+#         'title': 'Магазин продуктов - главная'
+#     }
+#     return render(request, 'catalog/product.html', context)
+#
 
 def contacts(request):
     if request.method == 'POST':

@@ -1,0 +1,29 @@
+{% extends 'catalog/base.html' %}
+{% load my_tags_catalog %}
+{% block content %}
+{% for object in object_list %}
+<div class="col-md-4">
+    <div class="card mb-4 box-shadow">
+        <img class="card-img-top"
+             src="{{ object.product_image | product_image }}" height="300"
+             alt="Card image cap">
+        <div class="card-body">
+            <p class="card-text">
+                {% if object.in_stock %}
+                {{ object|title|slice:":100" }}
+                {% else %}
+                <span class="text-muted">{{ object|title|slice:":100" }}</span>
+                {% endif %}
+            </p>
+            <h3 class="card-title pricing-card-title">{{ object.product_price }} руб.</h3>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <a href="/product_list/" class="btn btn-sm btn-outline-secondary">Вернуться</a>
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Купить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
