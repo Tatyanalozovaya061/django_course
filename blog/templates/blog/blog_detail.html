@@ -1,0 +1,32 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="col">
+    <a href="{% url 'blog:list' %}" type="button"
+                       class="btn btn-secondary">вернуться</a>
+
+    <div class="card shadow-sm">
+
+        <div class="text-center">
+            <img src="/media/{{ object.preview }}" width="500" height="250" class="rounded" alt="Card image cap">
+        </div>
+
+        <p class="text-center fw-bold">
+            {{ object.title }}
+        </p>
+
+        <div class="card-body">
+            <p class="text-center">{{ object.content }}</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <a href="{% url 'blog:edit_blog' object.pk %}" type="button"
+                       class="btn btn-secondary">редактирование</a>
+                    <a href="{% url 'blog:delete_blog' object.pk %}" type="button"
+                       class="btn btn-secondary">удаление</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

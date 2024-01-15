@@ -1,0 +1,39 @@
+{% extends 'catalog/base.html' %}
+{% load my_tags %}
+{% block content %}
+<div class="row">
+    <div class="col">
+
+        <a href="{% url 'catalog:list' %}" type="button"
+                       class="btn btn-outline-light">Back to list</a>
+
+        <div class="card shadow-sm">
+                        <p class="text-center">Категория: {{ object.category }}</p></svg>
+                <p class="text-center">{{ object.name }}</p></svg>
+            <div class="text-center">
+                <img src="{{ object.image | mymedia }}" class="rounded" alt="Card image cap">
+            </div>
+            <div class="card-body">
+                <p class="text-center">{{ object.description }}</p>
+                <p class="text-center">Стоимость: {{ object.price }} рублей</p>
+                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                    <a href="{% url 'catalog:category_list' %}" class="btn btn-sm btn-outline-secondary">Вернуться на главную</a>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                        <a href="{% url 'catalog:product_list' object.pk %}" type="button"
+                           class="btn btn-sm btn-outline-secondary">К ассортименту категории</a>
+                </div>
+                    <div class="btn-group">
+                        <div class="btn-group">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
