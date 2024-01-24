@@ -23,8 +23,6 @@ class Product(models.Model):
     price = models.FloatField(verbose_name='стоимость за единицу')
     created_at = models.DateTimeField(auto_now_add=True)
     changed_at = models.DateTimeField(auto_now=True)
-    # date_create = models.DateField(**NULLABLE, verbose_name='date_create')
-    # change_data = models.DateField(**NULLABLE, verbose_name='change_data')
 
     def __str__(self):
         return f"{self.name} по цене: {self.price}"
@@ -32,3 +30,17 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
+
+
+class Version(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='продукт')
+    version_number = models.IntegerField(verbose_name='номер версии')
+    version_name = models.CharField(max_length=100, verbose_name='название версии')
+    is_active = models.BooleanField(default=False, verbose_name='активность версии')
+
+    def __str__(self):
+        return f'{self.product} - {self.version_number}'
+
+    class Meta:
+        verbose_name = 'версия'
+        verbose_name_plural = 'версии'

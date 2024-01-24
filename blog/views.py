@@ -16,6 +16,7 @@ class BlogCreateView(CreateView):
             new_blog.save()
         return super().form_valid(form)
 
+
 class BlogListView(ListView):
     model = Blog
 
@@ -47,8 +48,8 @@ class BlogUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('blog:view', args=[self.object.slug])
-#
-#
+
+
 class BlogDeleteView(DeleteView):
     model = Blog
     success_url = reverse_lazy('blog:list')

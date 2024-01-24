@@ -1,9 +1,21 @@
-from catalog.models import Product, Category
-from django.views.generic import ListView, DetailView
+from django.urls import reverse_lazy
+
+from catalog.forms import ProductForm, VersionForm
+from catalog.models import Product, Category, Version
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 
 class ProductListView(ListView):
     model = Product
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     active_versions = Version.objects.filter(is_active=True)
+    #     if active_versions:
+    #         context['active_versions'] = active_versions
+    #     else:
+    #         context['active_versions'] = None
+    #     return context
 
 
 class ProductDetailView(DetailView):
@@ -20,3 +32,26 @@ class CategoryProductListView(ListView):
     def get_queryset(self):
         category_pk = self.kwargs['pk']
         return Product.objects.filter(category_id=category_pk)
+
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy('catalog:list')
+
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    success_url = reverse_lazy('catalog:list')
+
+
+class ProductDeleteView(DeleteView):
+    model = Product
+    success_url = reverse_lazy('catalog:list')
+
+
+class VersionCreateView(CreateView):
+    model = Version
+    form_class = VersionForm
+    success_url = reverse_lazy('catalog:list')
