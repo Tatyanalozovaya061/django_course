@@ -12,3 +12,8 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
+
+
+# @admin.register(Category)
+# class VersionAdmin(admin.ModelAdmin):
+#     list_display = '__all_'

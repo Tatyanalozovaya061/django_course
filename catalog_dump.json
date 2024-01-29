@@ -1,0 +1,117 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "name": "овощи",
+      "description": "овощи, корнеплоды, соленья"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "name": "фрукты",
+      "description": "фрукты, ягоды, варенье"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+      "name": "бакалея",
+      "description": "орехи, сухофрукты"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 1,
+    "fields": {
+      "name": "помидоры",
+      "description": "сорт Черри",
+      "image": "product_image/cherry.jpeg",
+      "category": 1,
+      "price": 250.0,
+      "created_at": "2024-01-07T22:48:13.673Z",
+      "changed_at": "2024-01-07T22:48:13.673Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 2,
+    "fields": {
+      "name": "огурцы соленые",
+      "description": "огурцы бочковые",
+      "image": "product_image/ogurec.jpeg",
+      "category": 1,
+      "price": 200.0,
+      "created_at": "2024-01-07T22:49:15.994Z",
+      "changed_at": "2024-01-07T22:49:15.994Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 3,
+    "fields": {
+      "name": "яблоки",
+      "description": "сорт Голден",
+      "image": "product_image/yabloko.jpg",
+      "category": 2,
+      "price": 150.0,
+      "created_at": "2024-01-07T22:50:59.969Z",
+      "changed_at": "2024-01-07T22:50:59.969Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 4,
+    "fields": {
+      "name": "груши",
+      "description": "сорт Дюшес",
+      "image": "product_image/grusha.jpg",
+      "category": 2,
+      "price": 200.0,
+      "created_at": "2024-01-07T22:51:33.530Z",
+      "changed_at": "2024-01-07T22:51:33.530Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 5,
+    "fields": {
+      "name": "изюм",
+      "description": "сушеный виноград",
+      "image": "product_image/izum.jpeg",
+      "category": 3,
+      "price": 300.0,
+      "created_at": "2024-01-07T22:52:09.888Z",
+      "changed_at": "2024-01-07T22:52:09.888Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 6,
+    "fields": {
+      "name": "макадамия",
+      "description": "орехи с очень плотной скорлупой",
+      "image": "product_image/macadamia.jpeg",
+      "category": 3,
+      "price": 800.0,
+      "created_at": "2024-01-07T22:52:50.393Z",
+      "changed_at": "2024-01-07T22:52:50.393Z"
+    }
+  },
+  {
+    "model": "catalog.product",
+    "pk": 16,
+    "fields": {
+      "name": "картофель",
+      "description": "живет в земле",
+      "image": "",
+      "category": 1,
+      "price": 50.0,
+      "created_at": "2024-01-24T13:09:23.974Z",
+      "changed_at": "2024-01-24T13:09:23.974Z"
+    }
+  }
+]
