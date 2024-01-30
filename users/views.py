@@ -1,4 +1,6 @@
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib.auth.views import LogoutView as BaseLogoutView
 from django.core.mail import send_mail
@@ -25,6 +27,11 @@ class RegisterView(CreateView):
     success_url = reverse_lazy('users:login')
 
     def form_valid(self, form):
+        new_user = form.save(commit=False)
+        new_user.is_active = False
+        new_user.save()
+
+    def form_valid(self, form):
         new_user = form.save()
         # Отправка письма
         send_mail(
@@ -36,7 +43,7 @@ class RegisterView(CreateView):
         return super().form_valid(form)
 
 
-class ProfileView(UpdateView):
+class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserProfileForm
     success_url = reverse_lazy('users:profile')
@@ -45,9 +52,9 @@ class ProfileView(UpdateView):
         return self.request.user
 
 
+@login_required
 def generate_new_password(request):
     new_password = User.objects.make_random_password()
-    # Отправка нового пароля
     send_mail(
         subject='Вы изменили пароль',
         message=f'Ваш новый пароль: {new_password}',

@@ -138,14 +138,15 @@ AUTH_USER_MODEL = 'users.User'
 
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
-
-if DEBUG:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-    EMAIL_HOST = 'smtp.yandex.ru'
-    EMAIL_PORT = 465
-    EMAIL_HOST_USER = 'awesomevanechka@yandex.ru'
-    EMAIL_HOST_PASSWORD = 'wmhgzgoeaywpdrzt'
-    EMAIL_USE_SSL = True
+LOGIN_URL = '/users/'
+#
+# if DEBUG:
+#     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# else:
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'awesomevanechka@yandex.ru'
+EMAIL_HOST_PASSWORD = 'wmhgzgoeaywpdrzt'
+EMAIL_USE_SSL = True
 

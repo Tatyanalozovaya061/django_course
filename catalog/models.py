@@ -24,6 +24,7 @@ class Product(models.Model):
     price = models.FloatField(verbose_name='стоимость за единицу')
     created_at = models.DateTimeField(auto_now_add=True)
     changed_at = models.DateTimeField(auto_now=True)
+    is_published = models.BooleanField(default=True, verbose_name='опубликован')
 
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='продавец')
 
