@@ -11,6 +11,7 @@
 </div>
 <div class="row">
     {% for object in object_list %}
+    {% if user.is_staff or user.is_superuser or user.is_active %}
     <div class="col-md-4">
         <div class="card mb-4 box-shadow">
             <img class="card-img-top"
@@ -35,6 +36,7 @@
             </div>
         </div>
     </div>
+    {% endif %}
     {% endfor %}
 </div>
 {% endblock %}
