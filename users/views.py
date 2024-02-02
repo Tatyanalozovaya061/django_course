@@ -1,4 +1,4 @@
-from random import randint
+from random import random
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -34,48 +34,31 @@ class RegisterView(CreateView):
     success_url = reverse_lazy('users:login')
 
     def form_valid(self, form):
-        response = super().form_valid(form)
         new_user = form.save()
-        # Создание и сохранение токена
+        new_user.is_active = False
         token = get_random_string(length=20)
         new_user.email_token = token
-        new_user.save()
-        current_site = get_current_site(self.request)
-        mail_subject = 'Подтвердите ваш аккаунт'
-        message = (
-            f'Поздравляем с успешной регистрацией!\n'
-            f'Пройдите по ссылке ниже для подтверждения Вашей электронной почты\n'
-            f'http://{current_site.domain}{reverse("users:verify_email", kwargs={"uid": new_user.pk, "token": token})}'
-        )
+        message = f'Поздравляем с успешной регистрацией!\n'\
+                  f'Пройдите по ссылке ниже для подтверждения Вашей электронной почты\n'\
+                  f'http://127.0.0.1:8000/users/verify/?token={token}'
         send_mail(
-            subject=mail_subject,
+            subject='Подтверждение E-mail адреса',
             message=message,
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=[new_user.email]
         )
-        return response
+        return super().form_valid(form)
 
-
-class VerifyEmailView(View):
-    def get(self, request, uid, token):
-        try:
-            user = get_object_or_404(User, pk=uid, email_token=token)
-            user.is_verified = True
+def activate_user(request):
+    key = request.GET.get('token')
+    current_user = User.objects.filter(is_active=False)
+    for user in current_user:
+        if str(user.email_token) == str(key):
+            user.is_active = True
+            user.email_token = None
             user.save()
-            return render(request, 'users/confirm_email.html')
-        except User.DoesNotExist:
-            return render(request, 'users/error_email.html')
-
-
-class ProfileView(LoginRequiredMixin, UpdateView):
-    model = User
-    form_class = UserProfileForm
-    success_url = reverse_lazy('catalog:home')
-
-    def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.is_active:
-            return HttpResponseForbidden("Ваша электронная почта еще не проверена.")
-        return super().dispatch(request, *args, **kwargs)
+    response = redirect(reverse_lazy('users:login'))
+    return response
 
 
 @login_required
@@ -90,3 +73,11 @@ def generate_new_password(request):
     request.user.set_password(new_password)
     request.user.save()
     return redirect(reverse('catalog:list'))
+
+class ProfileView(UpdateView):
+    model = User
+    form_class = UserProfileForm
+    success_url = reverse_lazy('users:profile')
+
+    def get_object(self, queryset=None):  # отвязываемся от pk
+        return self.request.user
