@@ -1,5 +1,6 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.forms import inlineformset_factory
+from django.http import Http404
 from django.urls import reverse_lazy
 
 from catalog.forms import ProductForm, VersionForm
@@ -7,7 +8,7 @@ from catalog.models import Product, Category, Version
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 
-class ProductListView(LoginRequiredMixin, ListView):
+class ProductListView(ListView):
     model = Product
 
     def get_context_data(self, **kwargs):
@@ -20,15 +21,15 @@ class ProductListView(LoginRequiredMixin, ListView):
         return context
 
 
-class ProductDetailView(LoginRequiredMixin, DetailView):
+class ProductDetailView(DetailView):
     model = Product
 
 
-class CategoryListView(LoginRequiredMixin, ListView):
+class CategoryListView(ListView):
     model = Category
 
 
-class CategoryProductListView(LoginRequiredMixin, ListView):
+class CategoryProductListView(ListView):
     model = Category
 
     def get_queryset(self):
@@ -36,10 +37,11 @@ class CategoryProductListView(LoginRequiredMixin, ListView):
         return Product.objects.filter(category_id=category_pk)
 
 
-class ProductCreateView(LoginRequiredMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:list')
+    permission_required = 'catalog.add_product'
 
     def form_valid(self, form):
         self.object = form.save()
@@ -48,15 +50,23 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:list')
+    permission_required = ('catalog.change_product')
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.object.owner != self.request.user:
+            raise Http404
+        return self.object
 
 
-class ProductDeleteView(LoginRequiredMixin, DeleteView):
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:list')
+    permission_required = 'catalog.delete_product'
 
 
 class VersionCreateView(CreateView):

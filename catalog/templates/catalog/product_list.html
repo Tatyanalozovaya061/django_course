@@ -1,14 +1,18 @@
 {% extends 'catalog/base.html' %}
+{% load my_tags %}
 {% block content %}
 <section class="jumbotron text-center">
     <div class="container">
         <h1 class="jumbotron-heading">Каталог продуктов</h1>
     </div>
 </section>
+<!--{% if  user.is_superuser or user.is_active and perms.catalog.add_product  %}-->
 <div class="col-12">
     <a href="{% url 'catalog:create_product' %}" type="button"
        class="btn btn-outline-secondary">Добавить продукт и версию</a>
 </div>
+<!--{% endif %}-->
+
 <div class="row">
     {% for object in object_list %}
     {% if user.is_staff or user.is_superuser or user.is_active %}
@@ -27,8 +31,10 @@
                     <div class="btn-group">
                         <a href="{% url 'catalog:detail_list' object.pk %}" type="button"
                            class="btn btn-sm btn-outline-secondary">Подробнее</a>
+                        {% if perms.catalog.change_product or object.owner == request.user %}
                         <a href="{% url 'catalog:update_product' object.pk %}" type="button"
                            class="btn btn-sm btn-outline-secondary">Редактировать</a>
+                        {% endif %}
                         <a href="{% url 'catalog:delete_product' object.pk %}" type="button"
                            class="btn btn-sm btn-outline-secondary">Удалить</a>
                     </div>

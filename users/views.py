@@ -72,7 +72,7 @@ def generate_new_password(request):
     )
     request.user.set_password(new_password)
     request.user.save()
-    return redirect(reverse('catalog:list'))
+    return redirect(reverse('users:login'))
 
 class ProfileView(UpdateView):
     model = User
