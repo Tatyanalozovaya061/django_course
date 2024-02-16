@@ -1,13 +1,33 @@
 from django import forms
+from django.core.exceptions import PermissionDenied
 
 from catalog.models import Product, Version
+
+
+class UserPassesTestMixin:
+    def dispatch(self, request, *args, **kwargs):
+        if not self.test_func(request.user):
+            # Действия, если пользователь не проходит проверку
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
+
+    def test_func(self, user):
+        # Реализуйте свою логику проверки здесь
+        # В этом примере, пользователь должен быть модератором или владельцем
+        return user.is_authenticated and (user.is_moderator or self.is_owner(user))
+
+    def is_owner(self, user):
+        # Реализуйте свою логику проверки владельца здесь
+        # Здесь предполагается, что у модели есть поле "owner", содержащее владельца
+        return user == self.get_object().owner
 
 
 class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ('name', 'description', 'image', 'category', 'price',)
+        exclude = ('owner',)
+        # fields = ('name', 'description', 'image', 'category', 'price', 'is')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -15,7 +15,7 @@
 
 <div class="row">
     {% for object in object_list %}
-    {% if user.is_staff or user.is_superuser or user.is_active %}
+    {% if object.is_published or user.is_staff or user.is_superuser or object.owner == request.user %}
     <div class="col-md-4">
         <div class="card mb-4 box-shadow">
             <img class="card-img-top"
@@ -31,12 +31,14 @@
                     <div class="btn-group">
                         <a href="{% url 'catalog:detail_list' object.pk %}" type="button"
                            class="btn btn-sm btn-outline-secondary">Подробнее</a>
-                        {% if perms.catalog.change_product or object.owner == request.user %}
-                        <a href="{% url 'catalog:update_product' object.pk %}" type="button"
-                           class="btn btn-sm btn-outline-secondary">Редактировать</a>
+                        {% if object.owner == request.user or user.is_superuser or user.is_staff %}
+                            <a href="{% url 'catalog:update_product' object.pk %}" type="button"
+                               class="btn btn-sm btn-outline-secondary">Редактировать</a>
                         {% endif %}
+                        {% if object.owner == request.user or user.is_superuser%}
                         <a href="{% url 'catalog:delete_product' object.pk %}" type="button"
                            class="btn btn-sm btn-outline-secondary">Удалить</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

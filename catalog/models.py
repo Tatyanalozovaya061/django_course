@@ -36,9 +36,9 @@ class Product(models.Model):
         verbose_name_plural = 'продукты'
 
         permissions = [
-            ('set_is_published', 'разрешено менять публикацию товаров'),
-            ('set_description', 'разрешено менять описание товаров'),
-            ('set_category', 'разрешено менять категорию товаров'),
+            ('set_is_published', 'разрешено менять публикацию товаров')
+            # ('set_description', 'разрешено менять описание товаров'),
+            # ('set_category', 'разрешено менять категорию товаров'),
         ]
 
 
