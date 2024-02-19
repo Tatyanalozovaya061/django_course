@@ -8,6 +8,8 @@ from catalog.forms import ProductForm, VersionForm
 from catalog.models import Product, Category, Version
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+from catalog.services import get_cached_categories
+
 
 class ProductListView(ListView):
     model = Product
@@ -28,6 +30,11 @@ class ProductDetailView(DetailView):
 
 class CategoryListView(ListView):
     model = Category
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['category_list'] = get_cached_categories()
+        return context_data
 
 
 class CategoryProductListView(ListView):
